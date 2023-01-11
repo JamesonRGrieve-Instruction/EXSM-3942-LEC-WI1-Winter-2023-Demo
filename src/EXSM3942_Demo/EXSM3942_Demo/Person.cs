@@ -37,6 +37,16 @@ namespace EXSM3942_Demo
             BirthDate = birthDate;
             Gender = gender;
         }
+        // Copying an object:
+        // "new" keyword usage in Main().
+        public Person(Person toClone)
+        {
+            FirstName = toClone.FirstName;
+            MiddleName = toClone.MiddleName;
+            LastName = toClone.LastName;
+            BirthDate = toClone.BirthDate;
+            Gender = toClone.Gender;
+        }
 
         // with a first name, middle name, last name, birth date and gender property
         public string FirstName { get; set; }
@@ -80,9 +90,13 @@ namespace EXSM3942_Demo
         }
 
         // Implement a ToString() method that will describe the person in an English sentence.
-        public string ToString() => $"A {Age} year old person of the {Gender} gender named {FullName}.";
+        public override string ToString() => $"A {Age} year old person of the {Gender} gender named {FullName}.";
 
         // Implement an Introduction() method that will introduce the person by the first name as an English sentence.
         public string Introduction() => $"Hello, my name is {FirstName}!";
+
+        // Copying an object:
+        // "new" keyword usage in the class.
+        public Person Clone() => new Person(FirstName, MiddleName, LastName, BirthDate, Gender);
     }
 }
