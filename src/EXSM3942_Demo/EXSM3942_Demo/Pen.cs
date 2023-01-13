@@ -8,15 +8,18 @@ namespace EXSM3942_Demo
 {
     internal class Pen
     {
-        public Pen(string brand, string colour)
+        public Pen(string brand, string colour, decimal inkLevel)
         {
             Brand = brand;
             Colour = colour;
+            InkLevel = inkLevel;
+            MaxInk = inkLevel;
         }
 
         public string Brand { get; set; }
         public string Colour { get; set; }
-        private decimal _inkLevel = 100;
+        public decimal MaxInk { get; set; }
+        private decimal _inkLevel;
         public decimal InkLevel {
             get => _inkLevel;
             set
@@ -35,7 +38,11 @@ namespace EXSM3942_Demo
 
         public void Write(int letterCount)
         {
-            InkLevel -= letterCount * 0.5m;
+            InkLevel -= letterCount * 0.1m;
+        }
+        public string SummarizeInkLevel()
+        {
+            return $"Of the maximum {MaxInk}ml, the pen contains {InkLevel}ml of ink, which is {Math.Round(InkLevel/MaxInk*100,2)}%.";
         }
     }
 }

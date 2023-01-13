@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Pen myPen = new Pen("Bic", "Black");
+            Pen myPen = new Pen("Bic", "Black", 55.2m);
             try
             {
                 myPen.Write(100);
@@ -15,7 +15,7 @@
             {
                 Console.WriteLine(ex.Message);
             }
-            Console.WriteLine(myPen.InkLevel);
+            Console.WriteLine(myPen.SummarizeInkLevel());
         }
     }
 }
