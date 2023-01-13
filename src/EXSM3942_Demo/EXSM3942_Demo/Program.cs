@@ -4,7 +4,18 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Pen myPen = new Pen("Bic", "Black");
+            try
+            {
+                myPen.Write(100);
+                myPen.Write(42);
+                myPen.Write(200);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            Console.WriteLine(myPen.InkLevel);
         }
     }
 }
