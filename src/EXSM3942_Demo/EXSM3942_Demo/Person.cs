@@ -10,7 +10,7 @@ namespace EXSM3942_Demo
 
 
     // Create a class called Person
-    internal class Person
+    public class Person
     {
         // Implement a greedy, partial and default constructor.
         public Person()
@@ -52,6 +52,8 @@ namespace EXSM3942_Demo
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+
+        public Pet Pet { get; set; } = new Pet();
         // Fully implement the birth date property to ensure the date is in the past.
         private DateOnly _birthDate;
         public DateOnly BirthDate {
