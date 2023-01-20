@@ -33,6 +33,7 @@
             if (person.GetType() == typeof(Student))
             {
                 // Once we have established the actual type of the object living in the polymorphic reference, we can cast it out to access properties and methods unique to that sub-type.
+                // If you attempt to cast to the wrong sub-type, it will throw an invalid cast exception.
                 Console.WriteLine(((Student)person).StudentID);
             }
             else if (person.GetType() == typeof(Employee))
