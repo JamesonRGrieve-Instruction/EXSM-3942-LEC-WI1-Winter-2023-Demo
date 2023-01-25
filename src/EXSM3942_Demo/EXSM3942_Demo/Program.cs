@@ -15,6 +15,23 @@ namespace EXSM3942_Demo
 
             // We can show all the files in a directory:
             foreach(string filename in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop))) Console.WriteLine(filename);
+
+            string testDir = "C:\\Users\\Jameson\\Desktop\\Demo\\csharp2";
+            RecurseFileNames(testDir);
+        }
+
+        // Recursion with files.
+        static void RecurseFileNames(string path, string tabs = "")
+        {
+            // Write the tabstop and the current path.
+            Console.WriteLine(tabs + path);
+            // Write the files in this directory.
+            foreach (string file in Directory.GetFiles(path)) Console.WriteLine(tabs + "\t" + file);
+            // Get the directories inside the path.
+            string[] subdirectories = Directory.GetDirectories(path);
+            // For each directory, recurse into it, and bump over a tabstop.
+            foreach (string subdir in subdirectories) RecurseFileNames(subdir, tabs+"\t");
+            
         }
     }
 }
