@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EXSM3942_Demo
 {
-    internal class Rectangle
+    internal class Rectangle : Shape
     {
         public Rectangle(double length, double width)
         {
@@ -17,10 +17,10 @@ namespace EXSM3942_Demo
         public double Width { get; set; }
 
         public bool IsSquare => Length == Width;
-        public double Area => Length * Width;
-        public double Perimeter => Length*2+Width*2;
+        public override double Area => Length * Width;
+        public override double Perimeter => Length*2+Width*2;
 
-        public Rectangle ContainWithSquare()
+        public override Rectangle Contain()
         {
            return new Rectangle(Math.Max(Length, Width), Math.Max(Length, Width));
         }

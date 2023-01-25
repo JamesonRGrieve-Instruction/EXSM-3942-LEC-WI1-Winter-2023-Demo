@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EXSM3942_Demo
 {
-    internal class Triangle
+    internal class Triangle : Shape
     {
         public Triangle(double bottom, double height)
         {
@@ -15,11 +15,13 @@ namespace EXSM3942_Demo
         }
         public double Base { get; set; }
         public double Height { get; set; }
-        public double Area => Base*Height/2;
+        public override double Area => Base * Height / 2;
 
-        public Rectangle ContainWithRectangle()
+        public override double Perimeter => Math.Sqrt(Math.Pow(Base / 2, 2) + Math.Pow(Height, 2)) * 2 + Base;
+
+        public override Rectangle Contain()
         {
-            return new Rectangle(Base, Height);
+            return new Rectangle(Math.Max(Base, Height), Math.Max(Base, Height));
         }
     }
 }
