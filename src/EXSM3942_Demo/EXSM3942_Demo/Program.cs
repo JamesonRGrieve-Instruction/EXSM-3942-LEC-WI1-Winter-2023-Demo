@@ -8,11 +8,23 @@ namespace EXSM3942_Demo
     {
         static void Main(string[] args)
         {
-            AsyncExample();
-
+            Thread threadOne = new Thread(new ThreadStart(AsyncExample));
+            Thread threadTwo = new Thread(new ThreadStart(AsyncExample));
+            threadOne.Start();
+            threadTwo.Start();
             Console.ReadLine();
         }
         static async void AsyncExample()
+        {
+            for(int i = 1; i <= 1000; i++)
+            {
+                Console.WriteLine(i);
+            }
+        }
+
+
+
+        static async void APIExample()
         {
             {
                 // ----
