@@ -8,18 +8,24 @@ namespace EXSM3942_Demo
     {
         static void Main(string[] args)
         {
-            Thread threadOne = new Thread(new ThreadStart(AsyncExample));
-            Thread threadTwo = new Thread(new ThreadStart(AsyncExample));
-            threadOne.Start();
-            threadTwo.Start();
-            Console.ReadLine();
+            Task<string> task;
+            // If the task hasn't completed yet, the Result will be null.
+            // In most cases dealing with the internet this is somewhat unpredictable, which is where await comes in.
+            Console.WriteLine((task = AsyncExample()).Result);
+            Thread.Sleep(1000);
+            Console.WriteLine(task.Result);
+
+            // This isn't valid in Main() because it isn't declared as asynchronous, but if your application is built to support it you can use await to ensure you have a result before proceeding.
+            Console.WriteLine((await AsyncExample()).Result);
         }
-        static async void AsyncExample()
+        static async Task<string> AsyncExample()
         {
-            for(int i = 1; i <= 1000; i++)
-            {
-                Console.WriteLine(i);
-            }
+            // Generate a client to handle our HTTP request.
+            HttpClient client = new HttpClient();
+            // URL for our request.
+            string destination = "http://numbersapi.com/random/math";
+            // Send the request and wait for a response.
+            return await client.GetStringAsync(destination);
         }
 
 
