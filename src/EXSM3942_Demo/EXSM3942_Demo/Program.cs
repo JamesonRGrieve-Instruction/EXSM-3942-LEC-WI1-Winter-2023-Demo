@@ -16,13 +16,32 @@ Application: Everything else that uses the Context and Models in order to serve 
 7. Specify OnModelCreating instructions for setting up models.
 */
 
+using EXSM3942_Demo.Data;
+using EXSM3942_Demo.Data.Models;
+
 namespace EXSM3942_Demo
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            using (GroceryStoreContext context = new GroceryStoreContext())
+            {
+                string catName, catDesc, prodName, prodDesc;
+                Console.Write("Please enter a category name: ");
+                catName = Console.ReadLine().Trim();
+                Console.Write("Please enter a category description: ");
+                catDesc = Console.ReadLine().Trim();
+                Console.Write("Please enter a product name: ");
+                prodName = Console.ReadLine().Trim();
+                Console.Write("Please enter a product description: ");
+                prodDesc = Console.ReadLine().Trim();
+
+                ProductCategory newCat = new ProductCategory() { Name = catName, Description = catDesc };
+                context.ProductCategories.Add(newCat);
+                context.Products.Add(new Product() { Name = prodName, Description = prodDesc, ProductCategory = newCat });
+                context.SaveChanges();
+            }
         }
     }
 }

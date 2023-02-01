@@ -31,27 +31,66 @@ namespace EXSM3942_Demo.Data
         // Setup instructions for creating a model object.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.ToTable("product");
+                entity.HasKey(model => model.ID);
+
                 // Setup instructions for Product.
                 entity.HasIndex(model => model.CategoryID).HasName($"FK_{nameof(Product)}_{nameof(ProductCategory)}");
+
+                entity.Property(model => model.ID)
+                    .HasColumnName("id")
+                    .HasColumnType("int(10)")
+                    .ValueGeneratedOnAdd();
                 entity.Property(model => model.Name)
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(30)")
+                    .IsRequired()
+                    .HasMaxLength(30)
                     .HasCharSet("utf8mb4")
                     .UseCollation("utf8mb4_general_ci");
                 entity.Property(model => model.Description)
+                    .HasColumnName("description")
+                    .HasColumnType("varchar(50)")
+                    .IsRequired()
+                    .HasMaxLength(50)
                     .HasCharSet("utf8mb4")
                     .UseCollation("utf8mb4_general_ci");
-
-                entity.HasOne(x => x.ProductCategory).WithMany(y => y.Products)
-                .HasForeignKey(x => x.CategoryID).HasConstraintName($"FK_{nameof(Product)}_{nameof(ProductCategory)}").OnDelete(DeleteBehavior.Restrict);
+                entity.Property(model => model.CategoryID)
+                    .HasColumnName("category_id")
+                    .HasColumnType("int(10)")
+                    .IsRequired();
+                entity
+                    .HasOne(x => x.ProductCategory)
+                    .WithMany(y => y.Products)
+                    .HasForeignKey(x => x.CategoryID)
+                    .HasConstraintName($"FK_{nameof(Product)}_{nameof(ProductCategory)}")
+                    .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<ProductCategory>(entity =>
             {
                 // Setup instructions for ProductCategory.
+                entity.ToTable("product_category");
+                entity.HasKey(model => model.ID);
+
+                entity.Property(model => model.ID)
+                    .HasColumnName("id")
+                    .HasColumnType("int(10)")
+                    .ValueGeneratedOnAdd();
                 entity.Property(model => model.Name)
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(30)")
+                    .IsRequired()
+                    .HasMaxLength(30)
                     .HasCharSet("utf8mb4")
                     .UseCollation("utf8mb4_general_ci");
                 entity.Property(model => model.Description)
+                    .HasColumnName("description")
+                    .HasColumnType("varchar(50)")
+                    .IsRequired()
+                    .HasMaxLength(30)
                     .HasCharSet("utf8mb4")
                     .UseCollation("utf8mb4_general_ci");
             });

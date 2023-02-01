@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EXSM3942Demo.Migrations
 {
     [DbContext(typeof(GroceryStoreContext))]
-    [Migration("20230201031109_InitialMigration")]
+    [Migration("20230201032523_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -55,7 +55,7 @@ namespace EXSM3942Demo.Migrations
                     b.HasIndex("CategoryID")
                         .HasDatabaseName("FK_Product_ProductCategory");
 
-                    b.ToTable("Products");
+                    b.ToTable("product", (string)null);
                 });
 
             modelBuilder.Entity("EXSM3942_Demo.Data.Models.ProductCategory", b =>
@@ -67,7 +67,7 @@ namespace EXSM3942Demo.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(30)
                         .HasColumnType("varchar(50)")
                         .HasColumnName("description")
                         .UseCollation("utf8mb4_general_ci");
@@ -85,7 +85,7 @@ namespace EXSM3942Demo.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("product_category");
+                    b.ToTable("product_category", (string)null);
                 });
 
             modelBuilder.Entity("EXSM3942_Demo.Data.Models.Product", b =>
@@ -93,8 +93,9 @@ namespace EXSM3942Demo.Migrations
                     b.HasOne("EXSM3942_Demo.Data.Models.ProductCategory", "ProductCategory")
                         .WithMany("Products")
                         .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Product_ProductCategory");
 
                     b.Navigation("ProductCategory");
                 });

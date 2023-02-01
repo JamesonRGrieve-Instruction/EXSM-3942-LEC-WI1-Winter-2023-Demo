@@ -22,7 +22,7 @@ namespace EXSM3942Demo.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    description = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_general_ci")
+                    description = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false, collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -32,7 +32,7 @@ namespace EXSM3942Demo.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "product",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int(10)", nullable: false)
@@ -45,19 +45,19 @@ namespace EXSM3942Demo.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.id);
+                    table.PrimaryKey("PK_product", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Products_product_category_category_id",
+                        name: "FK_Product_ProductCategory",
                         column: x => x.categoryid,
                         principalTable: "product_category",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "FK_Product_ProductCategory",
-                table: "Products",
+                table: "product",
                 column: "category_id");
         }
 
@@ -65,7 +65,7 @@ namespace EXSM3942Demo.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "product");
 
             migrationBuilder.DropTable(
                 name: "product_category");
