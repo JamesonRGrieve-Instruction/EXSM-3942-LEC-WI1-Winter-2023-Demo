@@ -101,15 +101,18 @@ namespace EXSM3942_Demo.Data
 
                 string[] beverages = new string[] { "Milk", "Coffee", "Cola", "Water", "Honey" };
                 string[] sizes = new string[] { "0.5L", "1L", "2L", "3L", "4L" };
-                Random random = new Random();
-                string size, beverage;
+                int id = -4;
+                List<Product> perms = new List<Product>();
+                foreach (string beverage in beverages) foreach (string size in sizes) perms.Add(new Product() { ID = id--, Name = $"{beverage}, {size}", Description = $"A {size} bottle of {beverage}.", CategoryID = -1 });
+
                 entity
                     .HasData(new Product[] {
                         new Product() { ID = -1, Name = "Milk 1%, 4L", Description = "A 4L bottle of 1% milk.", CategoryID = -1 },
                         new Product() { ID = -2, Name = "Salami, Slice", Description = "A slice of salami.", CategoryID = -2 },
-                        new Product() { ID = -3, Name = "Lettuce", Description = "A head of lettuce.", CategoryID = -3 },
-                        new Product() { ID = -4, Name = $"{beverage=beverages[random.Next(0,5)]}, {size=sizes[random.Next(0,5)]}", Description = $"A {size} bottle of {beverage}.", CategoryID = -1}
-                    }); 
+                        new Product() { ID = -3, Name = "Lettuce", Description = "A head of lettuce.", CategoryID = -3 }
+                    });
+                entity
+                    .HasData(perms);
             });
             
         }
