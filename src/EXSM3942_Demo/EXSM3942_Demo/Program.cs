@@ -25,23 +25,7 @@ namespace EXSM3942_Demo
     {
         static void Main(string[] args)
         {
-            using (GroceryStoreContext context = new GroceryStoreContext())
-            {
-                string catName, catDesc, prodName, prodDesc;
-                Console.Write("Please enter a category name: ");
-                catName = Console.ReadLine().Trim();
-                Console.Write("Please enter a category description: ");
-                catDesc = Console.ReadLine().Trim();
-                Console.Write("Please enter a product name: ");
-                prodName = Console.ReadLine().Trim();
-                Console.Write("Please enter a product description: ");
-                prodDesc = Console.ReadLine().Trim();
 
-                ProductCategory newCat = new ProductCategory() { Name = catName, Description = catDesc };
-                context.ProductCategories.Add(newCat);
-                context.Products.Add(new Product() { Name = prodName, Description = prodDesc, ProductCategory = newCat });
-                context.SaveChanges();
-            }
         }
     }
 }

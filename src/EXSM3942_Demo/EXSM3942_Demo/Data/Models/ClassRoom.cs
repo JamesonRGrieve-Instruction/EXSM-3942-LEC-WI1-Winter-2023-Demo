@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace EXSM3942_Demo.Data.Models
 {
-    public class Product
+    public class ClassRoom
     {
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int CategoryID { get; set; }
-        public virtual ProductCategory ProductCategory { get; set; }
+        public int RoomNumber { get; set; }
+        public virtual ICollection<Student> Students { get; set; }
     }
 }
