@@ -31,7 +31,37 @@ namespace EXSM3942_Demo.Data
         // Setup instructions for creating a model object.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ProductCategory>(entity =>
+            {
+                // Setup instructions for ProductCategory.
+                entity.ToTable("product_category");
+                entity.HasKey(model => model.ID);
 
+                entity.Property(model => model.ID)
+                    .HasColumnName("id")
+                    .HasColumnType("int(10)")
+                    .ValueGeneratedOnAdd();
+                entity.Property(model => model.Name)
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(30)")
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .HasCharSet("utf8mb4")
+                    .UseCollation("utf8mb4_general_ci");
+                entity.Property(model => model.Description)
+                    .HasColumnName("description")
+                    .HasColumnType("varchar(50)")
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .HasCharSet("utf8mb4")
+                    .UseCollation("utf8mb4_general_ci");
+                entity
+                    .HasData(new ProductCategory[] {
+                        new ProductCategory() { ID = -1, Name = "Dairy", Description = "Milk, cheese and stuff." },
+                        new ProductCategory() { ID = -2, Name = "Deli", Description = "Meats and stuff." },
+                        new ProductCategory() { ID = -3, Name = "Garden", Description = "Lettuce, tomatoes and stuff." }
+                    });
+            });
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.ToTable("product");
@@ -68,32 +98,14 @@ namespace EXSM3942_Demo.Data
                     .HasForeignKey(x => x.CategoryID)
                     .HasConstraintName($"FK_{nameof(Product)}_{nameof(ProductCategory)}")
                     .OnDelete(DeleteBehavior.Restrict);
+                entity
+                    .HasData(new Product[] {
+                        new Product() { ID = -1, Name = "Milk 1%, 4L", Description = "A 4L bottle of 1% milk.", CategoryID = -1 },
+                        new Product() { ID = -2, Name = "Salami, Slice", Description = "A slice of salami.", CategoryID = -2 },
+                        new Product() { ID = -3, Name = "Lettuce", Description = "A head of lettuce.", CategoryID = -3 }
+                    });
             });
-            modelBuilder.Entity<ProductCategory>(entity =>
-            {
-                // Setup instructions for ProductCategory.
-                entity.ToTable("product_category");
-                entity.HasKey(model => model.ID);
-
-                entity.Property(model => model.ID)
-                    .HasColumnName("id")
-                    .HasColumnType("int(10)")
-                    .ValueGeneratedOnAdd();
-                entity.Property(model => model.Name)
-                    .HasColumnName("name")
-                    .HasColumnType("varchar(30)")
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci");
-                entity.Property(model => model.Description)
-                    .HasColumnName("description")
-                    .HasColumnType("varchar(50)")
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci");
-            });
+            
         }
     }
 }
