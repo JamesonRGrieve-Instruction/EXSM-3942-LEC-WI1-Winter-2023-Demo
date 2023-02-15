@@ -23,13 +23,15 @@ namespace EXSM3942_Demo
 {
     internal class Program
     {
-        public static void CreateProduct(string name, string description, int categoryID)
+        public static int CreateProduct(string name, string description, int categoryID)
         {
-            using(GroceryStoreContext context = new GroceryStoreContext())
+            Product toCreate = new Product() { Name = name, Description = description, CategoryID = categoryID };
+            using (GroceryStoreContext context = new GroceryStoreContext())
             {
-                context.Products.Add(new Product() { Name = name, Description = description, CategoryID = categoryID });
+                context.Products.Add(toCreate);
                 context.SaveChanges();
             }
+            return toCreate.ID;
         }
         public static void UpdateProduct(int id, string name, string description, int categoryID)
         {
@@ -97,7 +99,7 @@ namespace EXSM3942_Demo
                     Console.Write("Please enter a category name: ");
                     catName = Console.ReadLine().Trim();
                     catID = GetCategoryIDByName(catName);
-                    CreateProduct(prodName, prodDesc, catID);
+                    Console.WriteLine($"Created product with ID {CreateProduct(prodName, prodDesc, catID)}.");
                 }
                 else if (input == "2")
                 {
