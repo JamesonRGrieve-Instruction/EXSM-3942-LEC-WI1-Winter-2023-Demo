@@ -23,116 +23,210 @@ namespace EXSM3942_Demo
 {
     internal class Program
     {
-        public static int CreateProduct(string name, string description, int categoryID)
+        public static int CreateStudent(string firstName, string lastName, int classroomID)
         {
-            Product toCreate = new Product() { Name = name, Description = description, CategoryID = categoryID };
-            using (GroceryStoreContext context = new GroceryStoreContext())
+            Student toCreate = new Student() { FirstName = firstName, LastName = lastName, ClassRoomID = classroomID };
+            using (ClassRoomContext context = new ClassRoomContext())
             {
-                context.Products.Add(toCreate);
+                context.Students.Add(toCreate);
                 context.SaveChanges();
             }
             return toCreate.ID;
         }
-        public static void UpdateProduct(int id, string name, string description, int categoryID)
+        public static void UpdateStudent(int id, string firstName, string lastName, int classroomID)
         {
-            using (GroceryStoreContext context = new GroceryStoreContext())
+            using (ClassRoomContext context = new ClassRoomContext())
             {
-                Product toUpdate = context.Products.Where(x => x.ID == id).Single();
-                toUpdate.Name = name;
-                toUpdate.Description = description;
-                toUpdate.CategoryID = categoryID;
+                Student toUpdate = context.Students.Where(x => x.ID == id).Single();
+                toUpdate.FirstName = firstName;
+                toUpdate.LastName = lastName;
+                toUpdate.ClassRoomID = classroomID;
                 context.SaveChanges();
             }
         }
-        public static void DeleteProduct(int id)
+        public static void DeleteStudent(int id)
         {
-            using (GroceryStoreContext context = new GroceryStoreContext())
+            using (ClassRoomContext context = new ClassRoomContext())
             {
-                Product toDelete = context.Products.Where(x => x.ID == id).Single();
-                context.Products.Remove(toDelete);
+                Student toDelete = context.Students.Where(x => x.ID == id).Single();
+                context.Students.Remove(toDelete);
                 context.SaveChanges();
             }
         }
-        public static List<Product> GetProducts()
+        public static List<Student> GetStudents()
         {
-            List<Product> products;
-            using (GroceryStoreContext context = new GroceryStoreContext())
+            List<Student> students;
+            using (ClassRoomContext context = new ClassRoomContext())
             {
-                products = context.Products.ToList();
+                students = context.Students.ToList();
             }
-            return products;
+            return students;
         }
-        public static int GetCategoryIDByName(string name)
+        public static int CreateClassroom(int roomNumber)
         {
-            int categoryID;
-            using (GroceryStoreContext context = new GroceryStoreContext())
+            ClassRoom toCreate = new ClassRoom() { RoomNumber = roomNumber };
+            using (ClassRoomContext context = new ClassRoomContext())
             {
-                categoryID = context.ProductCategories.Where(x=>x.Name == name).Single().ID;
+                context.ClassRooms.Add(toCreate);
+                context.SaveChanges();
             }
-            return categoryID;
+            return toCreate.ID;
         }
-        public static int GetProductIDByName(string name)
+        public static void UpdateClassroom(int id, int roomNumber)
         {
-            int categoryID;
-            using (GroceryStoreContext context = new GroceryStoreContext())
+            using (ClassRoomContext context = new ClassRoomContext())
             {
-                categoryID = context.Products.Where(x => x.Name == name).Single().ID;
+                ClassRoom toUpdate = context.ClassRooms.Where(x => x.ID == id).Single();
+                toUpdate.RoomNumber = roomNumber;
+                context.SaveChanges();
             }
-            return categoryID;
         }
+        public static void DeleteClassroom(int id)
+        {
+            using (ClassRoomContext context = new ClassRoomContext())
+            {
+                ClassRoom toDelete = context.ClassRooms.Where(x => x.ID == id).Single();
+                context.ClassRooms.Remove(toDelete);
+                context.SaveChanges();
+            }
+        }
+        public static List<ClassRoom> GetClassrooms()
+        {
+            List<ClassRoom> classrooms;
+            using (ClassRoomContext context = new ClassRoomContext())
+            {
+                classrooms = context.ClassRooms.ToList();
+            }
+            return classrooms;
+        }
+
+
+
+
+
+
+        public static int GetClassroomIDByRoomNumber(int number)
+        {
+            int classroomID;
+            using (ClassRoomContext context = new ClassRoomContext())
+            {
+                classroomID = context.ClassRooms.Where(x => x.RoomNumber == number).Single().ID;
+            }
+            return classroomID;
+        }
+
         static void Main(string[] args)
         {
             string input;
             do
             {
-                Console.WriteLine("Welcome to the Grocery Store!\n1. Create Product\n2. List Products\n3. Update Product\n4. Delete Product\n0. Exit");
+                Console.WriteLine("Welcome to the Classroom List!\n1. Classrooms\n2. Students\n0. Exit");
                 Console.Write("\tPlease make a selection: ");
                 input = Console.ReadLine().Trim();
                 if (input == "1")
                 {
-                    string catName, prodName, prodDesc;
-                    int catID;
-                    Console.Write("Please enter a product name: ");
-                    prodName = Console.ReadLine().Trim();
-                    Console.Write("Please enter a product description: ");
-                    prodDesc = Console.ReadLine().Trim();
-                    Console.Write("Please enter a category name: ");
-                    catName = Console.ReadLine().Trim();
-                    catID = GetCategoryIDByName(catName);
-                    Console.WriteLine($"Created product with ID {CreateProduct(prodName, prodDesc, catID)}.");
+                    // Classrooms
+                    string inputClassrooms;
+                    do
+                    {
+                        Console.WriteLine("Classroom Data\n1. Create Classroom\n2. List Classrooms\n3. Update Classroom\n4. Delete Classroom\n0. Back");
+                        Console.Write("\tPlease make a selection: ");
+                        inputClassrooms = Console.ReadLine().Trim();
+                        if (inputClassrooms == "1")
+                        {
+                            int roomNumber;
+                            Console.Write("Please enter a room number: ");
+                            roomNumber = int.Parse(Console.ReadLine().Trim());
+                            Console.WriteLine($"Created Classroom with ID {CreateClassroom(roomNumber)}.");
+                        }
+                        else if (inputClassrooms == "2")
+                        {
+                            foreach (ClassRoom classRoom in GetClassrooms())
+                            {
+                                Console.WriteLine($"{classRoom.ID} - {classRoom.RoomNumber}");
+                            }
+                        }
+                        else if (inputClassrooms == "3")
+                        {
+                            int targetID, targetNumber, newNumber;
+                            Console.Write("Please enter a current room number: ");
+                            targetNumber = int.Parse(Console.ReadLine().Trim());
+                            targetID = GetClassroomIDByRoomNumber(targetNumber);
+
+                            Console.Write("Please enter the updated room number: ");
+                            newNumber = int.Parse(Console.ReadLine().Trim());
+                            UpdateClassroom(targetID, newNumber);
+                        }
+                        else if (inputClassrooms == "4")
+                        {
+                            int targetID, targetNumber;
+                            Console.Write("Please enter a current room number: ");
+                            targetNumber = int.Parse(Console.ReadLine().Trim());
+                            targetID = GetClassroomIDByRoomNumber(targetNumber);
+                            DeleteClassroom(targetID);
+                        }
+                        else if (inputClassrooms != "0")
+                        {
+                            Console.WriteLine("Error, please make a valid selection.");
+                        }
+                        Console.WriteLine();
+                    } while (inputClassrooms != "0");
                 }
                 else if (input == "2")
                 {
-                    foreach(Product product in GetProducts())
+                    // Students
+                    string inputStudents;
+                    do
                     {
-                        Console.WriteLine($"{product.ID} - {product.Name}, {product.Description}");
-                    }
-                }
-                else if (input == "3")
-                {
-                    string targetName, catName, prodName, prodDesc;
-                    int catID, targetID;
-                    Console.Write("Please enter a current product name: ");
-                    targetName = Console.ReadLine().Trim();
-                    targetID = GetProductIDByName(targetName);
-
-                    Console.Write("Please enter the updated product name: ");
-                    prodName = Console.ReadLine().Trim();
-                    Console.Write("Please enter the updated product description: ");
-                    prodDesc = Console.ReadLine().Trim();
-                    Console.Write("Please enter the updated category name: ");
-                    catName = Console.ReadLine().Trim();
-                    catID = GetCategoryIDByName(catName);
-                    UpdateProduct(targetID, prodName, prodDesc, catID);
-                }
-                else if (input == "4")
-                {
-                    string targetName;
-                    int targetID;
-                    Console.Write("Please enter a current product name: ");
-                    targetName = Console.ReadLine().Trim();
-                    targetID = GetProductIDByName(targetName);
-                    DeleteProduct(targetID);
+                        Console.WriteLine("Student Data\n1. Create Student\n2. List Students\n3. Update Student\n4. Delete Student\n0. Back");
+                        Console.Write("\tPlease make a selection: ");
+                        inputStudents = Console.ReadLine().Trim();
+                        if (inputStudents == "1")
+                        {
+                            string firstName, lastName;
+                            int roomNumber;
+                            Console.Write("Please enter a first name: ");
+                            firstName = Console.ReadLine().Trim();
+                            Console.Write("Please enter a last name: ");
+                            lastName = Console.ReadLine().Trim();
+                            Console.Write("Please enter a room number: ");
+                            roomNumber = int.Parse(Console.ReadLine().Trim());
+                            Console.WriteLine($"Created student with ID {CreateStudent(firstName, lastName, GetClassroomIDByRoomNumber(roomNumber))}.");
+                        }
+                        else if (inputStudents == "2")
+                        {
+                            foreach (Student student in GetStudents())
+                            {
+                                Console.WriteLine($"{student.ID} - {student.FirstName} {student.LastName}");
+                            }
+                        }
+                        else if (inputStudents == "3")
+                        {
+                            string firstName, lastName;
+                            int targetID, roomNumber;
+                            Console.Write("Please enter a current Student ID: ");
+                            targetID = int.Parse(Console.ReadLine().Trim());
+                            Console.Write("Please enter the updated first name: ");
+                            firstName = Console.ReadLine().Trim();
+                            Console.Write("Please enter the updated last name: ");
+                            lastName = Console.ReadLine().Trim();
+                            Console.Write("Please enter the updated room number: ");
+                            roomNumber = int.Parse(Console.ReadLine().Trim());
+                            UpdateStudent(targetID, firstName, lastName, GetClassroomIDByRoomNumber(roomNumber));                          
+                        }
+                        else if (inputStudents == "4")
+                        {
+                            int targetID;
+                            Console.Write("Please enter a current Student ID: ");
+                            targetID = int.Parse(Console.ReadLine().Trim());
+                            DeleteStudent(targetID);
+                        }
+                        else if (inputStudents != "0")
+                        {
+                            Console.WriteLine("Error, please make a valid selection.");
+                        }
+                        Console.WriteLine();
+                    } while (inputStudents != "0");
                 }
                 else if (input != "0")
                 {
